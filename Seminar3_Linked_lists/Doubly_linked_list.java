@@ -11,13 +11,13 @@ package Seminar3_Linked_lists;
 
 public class Doubly_linked_list {
     public static void main(String[] args) {
-        List4 list1 = new List4();
+//        List4 list1 = new List4();
         List4 list2 = new List4();
-        for (int i = 1; i <= 5; i++) {
-            list1.pushFront(i);
+        for (int i = 10; i >= 1; i--) {
+//            list1.pushFront(i);
             list2.pushBack(i);
         }
-        list1.print(); // 54321
+/*        list1.print(); // 54321
         list2.print(); // 12345
 
         list1.popFront();
@@ -25,7 +25,9 @@ public class Doubly_linked_list {
 
         list2.popBack();
         list2.print();
-
+*/
+        list2.sort();
+        list2.print();
     }
 }
 
@@ -96,10 +98,47 @@ class List4 {
     public void print(){
         Node current = head;
         while (current != null) {
-            System.out.printf("%d", current.value);
+            System.out.printf("%d ", current.value);
             current = current.next;
         }
         System.out.println();
+    }
+
+// Пузырьковая сортировка
+    public void sort(){
+        boolean needSort = true;
+        do {
+            needSort = false;
+            Node node = head; // начальная нода
+            while (node != null && node.next != null){ // проходим до предпоследней позиции(чтобы всегда было 2 ноды для сравнения)
+                if (node.value > node.next.value) { // меняем местами (обьекты)
+                    Node before = node.previous; // ссылка до пары сравнения
+                    Node current = node; // текущая нода
+                    Node nextT = node.next; // нода справа с которой меняемся
+                    Node after = node.next.next; // нода после нашей пары
+// меняем ссылки у нод еоторые меняются местами(current, nextT)
+                    current.previous = nextT; // 
+                    current.next = after;
+                    nextT.previous = before;
+                    nextT.next = current;
+
+                    if (before != null) {
+                        before.next = nextT;
+                    } else{
+                        head = nextT;
+                    }
+
+                    if (after != null) {
+                        after.previous = current;
+                    } else{
+                        tail = current;
+                    }
+                    needSort = true;
+                }
+                node = node.next;
+            }
+
+        }while(needSort);
     }
 
 }
